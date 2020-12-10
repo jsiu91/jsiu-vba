@@ -1,0 +1,188 @@
+'**********************************
+'Title: Digital PTO Application
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 6/1/2018
+'
+'Last revision: 3/14/2019
+    'Date selection Enabled
+'**********************************
+
+Private Sub cmd_Cancel_Click()
+    If txt_Employee <> "" And lbl_Name.Caption <> "" Then
+        UserForm3.Show
+        UserForm1.Hide
+    Else
+        MsgBox "Please enter an employee number."
+    End If
+End Sub
+
+Private Sub cmd_Request_Click()
+    If DTPicker2.Enabled = False Then
+        MsgBox "Please select a date."
+    Else
+        If txt_Employee <> "" And lbl_Name.Caption <> "" Then
+            UserForm2.Show
+            UserForm1.Hide
+        Else
+            MsgBox "Please enter an employee number."
+        End If
+    End If
+End Sub
+
+Private Sub CommandButton1_Click()
+    Call CheckPassword
+End Sub
+
+Private Sub DTPicker1_CloseUp()
+    txt_From.Value = DTPicker1.Value
+
+    DTPicker2.Enabled = True
+
+    DTPicker2.MinDate = txt_From.Value
+    DTPicker2.Value = txt_From.Value
+    txt_To.Value = DTPicker2.Value
+
+End Sub
+
+Private Sub DTPicker2_CloseUp()
+    txt_To.Value = Me.DTPicker2.Value
+End Sub
+
+Private Sub Label2_Click()
+
+End Sub
+
+Private Sub lbl_Password_Click()
+
+End Sub
+
+Private Sub lbl_To_Click()
+
+End Sub
+
+Private Sub txt_Employee_Change()
+    Dim num As String
+    Dim formula As String
+    Dim formula2 As String
+    Dim row As String
+    
+    num = Val(txt_Employee)
+    formula = "=VLOOKUP(" + num + ",C1:D300,2,FALSE)"
+    formula2 = "=CELL(""address"",INDEX(C1:D300,MATCH(" + num + ",C1:C300,0),1))"
+    
+    Sheets("PTO Calendar").Range("NV3").formula = formula
+    Sheets("PTO Calendar").Range("NV4").formula = formula2
+    
+    lbl_Name.Caption = Sheets("PTO Calendar").Range("NW3")
+    
+    If Sheets("PTO Calendar").Range("NW3") <> "" Then
+        row = Mid(Sheets("PTO Calendar").Range("NW4").Value, 4, 3)
+        
+        lbl_PTO.Caption = Sheets("PTO Calendar").Range("NF" + row)
+        lbl_nPTO.Caption = Sheets("PTO Calendar").Range("NH" + row)
+        lbl_BD.Caption = Sheets("PTO Calendar").Range("NI" + row)
+        lbl_HO.Caption = Sheets("PTO Calendar").Range("NG" + row)
+    Else
+        lbl_PTO.Caption = ""
+        lbl_nPTO.Caption = ""
+        lbl_BD.Caption = ""
+        lbl_HO.Caption = ""
+    End If
+    
+    If Sheets("PTO Calendar").Range("NW3") <> "" Then
+        row = Mid(Sheets("PTO Calendar").Range("NW4").Value, 4, 3)
+        
+        If Sheets("PTO Calendar").Range("NM" + row) = 1 Then
+            lbl_NYD.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NN" + row) = 1 Then
+            lbl_MLK.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NO" + row) = 1 Then
+            lbl_P.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NP" + row) = 1 Then
+            lbl_M.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NQ" + row) = 1 Then
+            lbl_I.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NR" + row) = 1 Then
+            lbl_L.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NS" + row) = 1 Then
+            lbl_T.Visible = True
+        End If
+        If Sheets("PTO Calendar").Range("NT" + row) = 1 Then
+            lbl_C.Visible = True
+        End If
+    Else
+        lbl_NYD.Visible = False
+        lbl_MLK.Visible = False
+        lbl_P.Visible = False
+        lbl_M.Visible = False
+        lbl_I.Visible = False
+        lbl_L.Visible = False
+        lbl_T.Visible = False
+        lbl_C.Visible = False
+    End If
+    
+End Sub
+
+Private Sub UserForm_Initialize()
+    Me.lbl_Request.Caption = Now
+    DTPicker1.MinDate = Date
+    DTPicker1.Value = Date
+    
+     If day(Date) < 8 Then
+        txt_From.Value = DateAdd("m", 1, Date)
+        txt_From.Value = DateSerial(Year(txt_From.Value), month(txt_From.Value), 1)
+        DTPicker1.MinDate = txt_From.Value
+        DTPicker1.MinDate = txt_From.Value
+     ElseIf day(Date) > 7 Then
+        txt_To.Value = DateAdd("m", 2, Date)
+        txt_To.Value = DateSerial(Year(txt_To.Value), month(txt_To.Value), 1)
+        DTPicker1.MinDate = txt_To.Value
+        DTPicker1.Value = txt_To.Value
+    End If
+
+End Sub
+Private Sub CheckPassword()
+    Dim username As String
+    Dim password As String
+    Dim formula As String
+    Dim row As String
+    
+    username = Val(txt_Employee.Value)
+    password = txt_Password.Value
+    
+    formula = "=CELL(""address"",INDEX(A2:A300,MATCH(" + username + ",A2:A300,0),1))"
+    Sheets("Logins").Range("E2").formula = formula
+    
+    If Sheets("Logins").Range("F2").Value = "" Then
+        MsgBox "Incorrect Employee #"
+    Else
+        row = Mid(Sheets("Logins").Range("F2").Value, 4, 3)
+        
+        If Sheets("Logins").Range("B" + row) = "" Then
+            MsgBox "Please create a password" & Chr(10) & "Exit this Form and Press the 'Create Password' button"
+        ElseIf Sheets("Logins").Range("B" + row) <> password Then
+            MsgBox "Incorrect password"
+        Else
+            txt_Employee.Enabled = False
+            lbl_Password.Visible = False
+            txt_Password.Visible = False
+            cmd_Request.Visible = True
+            cmd_Cancel.Visible = True
+        End If
+    End If
+    
+End Sub
+
+Private Sub cbCancel_Click()
+    Sheets("PTO Calendar").Protect password:="DFS4all!"
+    Unload Me
+End Sub
+
