@@ -1,0 +1,19 @@
+Sub AddSheet()
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    
+    Dim sheetN As Integer
+    
+    sheetN = InputBox("How many days in the month:")
+    
+    For i = 3 To sheetN + 2
+        ActiveSheet.Select
+        ActiveSheet.copy After:=Sheets(i)
+        ActiveSheet.Name = "May " & i - 1
+        ActiveSheet.Range("A1") = "" & i - 1
+    Next i
+    
+    Application.ScreenUpdating = True
+    Application.Calculation = xlCalculationAutomatic
+    
+End Sub
