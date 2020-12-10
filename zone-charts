@@ -1,0 +1,619 @@
+'**********************************
+'Title: Break Times (Zone Charts)
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 11/20/2018
+'
+'Last revision: 5/22/2019
+'**********************************
+'Populates all the cells with the corresponding break times for all the employees based on the schedules tab on the excel sheet
+'**********************************
+Public cellValues As String
+Public sheetCode As String
+Public check As Integer
+
+Sub generateSchedule()
+    Dim formula As String
+
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+
+    cellValues = InputBox("Enter the value of the cells (1-2 letters):")
+    
+    'Clear Cells
+    Call clear
+    
+    'G-BEAUTY
+    Call checkTerminal("G", "D3", "4") 'Hoi, Wai Seng (Jeff)
+    Call checkTerminal("G", "D4", "5") 'Lin, Liyi (Joanna)
+    Call checkTerminal("G", "D5", "6") 'Yu Jenny
+    Call checkTerminal("G", "D6", "7") '----------------------------------------
+    Call checkTerminal("G", "D7", "8") '----------------------------------------
+    Call checkTerminal("G", "D8", "10") 'NH Gap 'Louie, Stephanie
+    Call checkTerminal("G", "D9", "11") 'Hu, Hai Bo (Michelle)
+    Call checkTerminal("G", "D10", "12") 'Galliguez, Susana
+    Call checkTerminal("G", "D11", "13") 'Janice
+    Call checkTerminal("G", "D12", "14") 'Chen, Annie --------------------------
+    Call checkTerminal("G", "D13", "15") 'Lau, Sharon -------------------------------
+    Call checkTerminal("G", "D14", "16") 'Lopez, Maryann (Mary Ann)
+    Call checkTerminal("G", "D15", "17") 'He, Jiayi(Angel)
+    Call checkTerminal("G", "D16", "18") 'Chan, Joyce -------------------------------
+    Call checkTerminal("G", "D17", "19") 'Gaffud, Rosanlinda (Rosa)
+    Call checkTerminal("G", "D18", "20") 'Qian, Yan Qi (Angela)
+    Call checkTerminal("G", "D19", "21") 'Yan, Gui Yu
+    Call checkTerminal("G", "D20", "22") '--------------------------------------
+    Call checkTerminal("G", "D21", "23") '--------------------------------------
+    Call checkTerminal("G", "D22", "24") 'Li,Jenny
+    Call checkTerminal("G", "D23", "25") 'Jiang, Kelly
+    Call checkTerminal("G", "D24", "26") 'Guo, Winnie
+    Call checkTerminal("G", "D25", "27") 'Ng, Siu Man (Jasmine)
+    Call checkTerminal("G", "D26", "28") 'Tan, Jing E (Jinger)
+    Call checkTerminal("G", "D27", "29") 'Li, Lucia
+    Call checkTerminal("G", "D28", "30") 'Li, Ya Xian (Michelle)
+    Call checkTerminal("G", "D29", "31") 'Liang, Jie Ning (Cindy)
+    Call checkTerminal("G", "D30", "32") 'Xu, Ya Yi (Joey)
+    Call checkTerminal("G", "D31", "33") 'He, Shirley
+    Call checkTerminal("G", "D32", "34") 'Zheng, Yang
+    Call checkTerminal("G", "D33", "35") 'Kong, Lei (Ariel)
+    Call checkTerminal("G", "D34", "36") 'Okura, Yoko
+    Call checkTerminal("G", "D35", "37") 'Yu, Julie
+    Call checkTerminal("G", "D36", "38") 'Lee, Meiliana
+    Call checkTerminal("G", "D37", "39") 'Javier, Gigi
+    Call checkTerminal("G", "D38", "40") 'Adriano, Elizabeth
+    Call checkTerminal("G", "D39", "41") 'Vicky
+    Call checkTerminal("G", "D40", "42") 'Chen, Hong Ju (Helen)
+    Call checkTerminal("G", "D41", "43") 'Fay
+    Call checkTerminal("G", "D42", "44") '----------------------------------------
+    Call checkTerminal("G", "D43", "45") 'Queenie
+    Call checkTerminal("G", "D44", "46") 'Cindy
+    Call checkTerminal("G", "D45", "47") 'NH Gap 'Liang, Yan Yan (Yannie)
+    Call checkTerminal("G", "D46", "48") 'He, Jia Li (Shelly)
+    Call checkTerminal("G", "D47", "49") 'Zhu, Yan Ming(Melanie)
+    Call checkTerminal("G", "D48", "50") 'Si-Tou, Fanny
+    Call checkTerminal("G", "D49", "51") 'Wu, Ruzhu (Carmen)
+    Call checkTerminal("G", "D50", "52") 'Ho, In Hong (Iris)
+    Call checkTerminal("G", "D51", "53") 'Wu, Lily
+    Call checkTerminal("G", "D52", "54") 'Lu, Shu-ling (Sharon)
+    Call checkTerminal("G", "D53", "55") 'Zhang, Qi Jing (Nikki)
+    Call checkTerminal("G", "D54", "56") 'Guan, Liu (Lilian)
+    Call checkTerminal("G", "D55", "57") 'Zhao, Gianna
+    Call checkTerminal("G", "D56", "58") 'Chen, Sharon S
+    Call checkTerminal("G", "D57", "59") 'Li, Xi Tong (Crystal)
+    Call checkTerminal("G", "D58", "60") 'Jin
+    Call checkTerminal("G", "D59", "61") 'Chu, Bo-Lin (Pauline)
+    Call checkTerminal("G", "D60", "62") 'Jiang, Yinyin
+    Call checkTerminal("G", "D61", "63") 'Chang, Kei On (Jennie)
+    Call checkTerminal("G", "D62", "64") 'Li, Vivian
+    Call checkTerminal("G", "D63", "65") 'Chen, Alina
+    Call checkTerminal("G", "D64", "66") 'Tong, Pek
+    Call checkTerminal("G", "D65", "67") 'Kwan, Kim Wai (Ryan)
+    Call checkTerminal("G", "D66", "68") 'Zhang, Ling
+    Call checkTerminal("G", "D67", "69") 'Feng, Qini (Annie)
+    Call checkTerminal("G", "D68", "70") 'Tang, Jian (Jenny)
+    Call checkTerminal("G", "D69", "71") 'Luo, Ruiyan
+    Call checkTerminal("G", "D70", "72") 'Cao, Leiyan (Susanna)
+    Call checkTerminal("G", "D71", "73") '----------------------------------------
+    Call checkTerminal("G", "D72", "74") 'Lee, Wenwen ----------------------------
+    Call checkTerminal("G", "D73", "75") 'Liu, Xiao Huan (Fiona)
+    Call checkTerminal("G", "D74", "76") 'Xu, Snow
+    Call checkTerminal("G", "D75", "77") 'Zhang, Michelle
+    Call checkTerminal("G", "D76", "78") 'Becky Liu
+    Call checkTerminal("G", "D77", "79") 'Young, Ngan(Swan)-----------------------
+    Call checkTerminal("G", "D78", "80") 'Nguyen, Quoc(Kimi)----------------------
+    Call checkTerminal("G", "D79", "81") 'Momal Salim ----------------------------
+    Call checkTerminal("G", "D80", "82") 'Cai, Cui Hua(Elva)----------------------
+    Call checkTerminal("G", "D81", "83") 'Li, Fei Y(Serena)-----------------------
+
+    'A-BEAUTY
+    Call checkTerminal("A", "H3", "4") 'Hoi, Wai Seng (Jeff)
+    Call checkTerminal("A", "H4", "5") 'Lin, Liyi (Joanna)
+    Call checkTerminal("A", "H5", "6") 'Yu Jenny
+    Call checkTerminal("A", "H6", "7") '----------------------------------------
+    Call checkTerminal("A", "H7", "8") '----------------------------------------
+    Call checkTerminal("A", "H8", "10") 'NH Gap 'Louie, Stephanie
+    Call checkTerminal("A", "H9", "11") 'Hu, Hai Bo (Michelle)
+    Call checkTerminal("A", "H10", "12") 'Galliguez, Susana
+    Call checkTerminal("A", "H11", "13") 'Janice
+    Call checkTerminal("A", "H12", "14") 'Chen, Annie --------------------------
+    Call checkTerminal("A", "H13", "15") 'Lau, Sharon -------------------------------
+    Call checkTerminal("A", "H14", "16") 'Lopez, Maryann (Mary Ann)
+    Call checkTerminal("A", "H15", "17") 'He, Jiayi(Angel)
+    Call checkTerminal("A", "H16", "18") 'Chan, Joyce -------------------------------
+    Call checkTerminal("A", "H17", "19") 'Gaffud, Rosanlinda (Rosa)
+    Call checkTerminal("A", "H18", "20") 'Qian, Yan Qi (Angela)
+    Call checkTerminal("A", "H19", "21") 'Yan, Gui Yu
+    Call checkTerminal("A", "H20", "22") '--------------------------------------
+    Call checkTerminal("A", "H21", "23") '--------------------------------------
+    Call checkTerminal("A", "H22", "24") 'Li,Jenny
+    Call checkTerminal("A", "H23", "25") 'Jiang, Kelly
+    Call checkTerminal("A", "H24", "26") 'Guo, Winnie
+    Call checkTerminal("A", "H25", "27") 'Ng, Siu Man (Jasmine)
+    Call checkTerminal("A", "H26", "28") 'Tan, Jing E (Jinger)
+    Call checkTerminal("A", "H27", "29") 'Li, Lucia
+    Call checkTerminal("A", "H28", "30") 'Li, Ya Xian (Michelle)
+    Call checkTerminal("A", "H29", "31") 'Liang, Jie Ning (Cindy)
+    Call checkTerminal("A", "H30", "32") 'Xu, Ya Yi (Joey)
+    Call checkTerminal("A", "H31", "33") 'He, Shirley
+    Call checkTerminal("A", "H32", "34") 'Zheng, Yang
+    Call checkTerminal("A", "H33", "35") 'Kong, Lei (Ariel)
+    Call checkTerminal("A", "H34", "36") 'Okura, Yoko
+    Call checkTerminal("A", "H35", "37") 'Yu, Julie
+    Call checkTerminal("A", "H36", "38") 'Lee, Meiliana
+    Call checkTerminal("A", "H37", "39") 'Javier, Gigi
+    Call checkTerminal("A", "H38", "40") 'Adriano, Elizabeth
+    Call checkTerminal("A", "H39", "41") 'Vicky
+    Call checkTerminal("A", "H40", "42") 'Chen, Hong Ju (Helen)
+    Call checkTerminal("A", "H41", "43") 'Fay
+    Call checkTerminal("A", "H42", "44") '----------------------------------------
+    Call checkTerminal("A", "H43", "45") 'Queenie
+    Call checkTerminal("A", "H44", "46") 'Cindy
+    Call checkTerminal("A", "H45", "47") 'NH Gap 'Liang, Yan Yan (Yannie)
+    Call checkTerminal("A", "H46", "48") 'He, Jia Li (Shelly)
+    Call checkTerminal("A", "H47", "49") 'Zhu, Yan Ming(Melanie)
+    Call checkTerminal("A", "H48", "50") 'Si-Tou, Fanny
+    Call checkTerminal("A", "H49", "51") 'Wu, Ruzhu (Carmen)
+    Call checkTerminal("A", "H50", "52") 'Ho, In Hong (Iris)
+    Call checkTerminal("A", "H51", "53") 'Wu, Lily
+    Call checkTerminal("A", "H52", "54") 'Lu, Shu-ling (Sharon)
+    Call checkTerminal("A", "H53", "55") 'Zhang, Qi Jing (Nikki)
+    Call checkTerminal("A", "H54", "56") 'Guan, Liu (Lilian)
+    Call checkTerminal("A", "H55", "57") 'Zhao, Gianna
+    Call checkTerminal("A", "H56", "58") 'Chen, Sharon S
+    Call checkTerminal("A", "H57", "59") 'Li, Xi Tong (Crystal)
+    Call checkTerminal("A", "H58", "60") 'Jin
+    Call checkTerminal("A", "H59", "61") 'Chu, Bo-Lin (Pauline)
+    Call checkTerminal("A", "H60", "62") 'Jiang, Yinyin
+    Call checkTerminal("A", "H61", "63") 'Chang, Kei On (Jennie)
+    Call checkTerminal("A", "H62", "64") 'Li, Vivian
+    Call checkTerminal("A", "H63", "65") 'Chen, Alina
+    Call checkTerminal("A", "H64", "66") 'Tong, Pek
+    Call checkTerminal("A", "H65", "67") 'Kwan, Kim Wai (Ryan)
+    Call checkTerminal("A", "H66", "68") 'Zhang, Ling
+    Call checkTerminal("A", "H67", "69") 'Feng, Qini (Annie)
+    Call checkTerminal("A", "H68", "70") 'Tang, Jian (Jenny)
+    Call checkTerminal("A", "H69", "71") 'Luo, Ruiyan
+    Call checkTerminal("A", "H70", "72") 'Cao, Leiyan (Susanna)
+    Call checkTerminal("A", "H71", "73") '----------------------------------------
+    Call checkTerminal("A", "H72", "74") 'Lee, Wenwen ----------------------------
+    Call checkTerminal("A", "H73", "75") 'Liu, Xiao Huan (Fiona)
+    Call checkTerminal("A", "H74", "76") 'Xu, Snow
+    Call checkTerminal("A", "H75", "77") 'Zhang, Michelle
+    Call checkTerminal("A", "H76", "78") 'Becky Liu
+    Call checkTerminal("A", "H77", "79") 'Young, Ngan(Swan)-----------------------
+    Call checkTerminal("A", "H78", "80") 'Nguyen, Quoc(Kimi)----------------------
+    Call checkTerminal("A", "H79", "81") 'Momal Salim ----------------------------
+    Call checkTerminal("A", "H80", "82") 'Cai, Cui Hua(Elva)----------------------
+    Call checkTerminal("A", "H81", "83") 'Li, Fei Y(Serena)-----------------------
+
+    'SWT
+    'A Main
+        formula = "=Schedule!" + cellValues + "90"
+        Range("N3").formula = formula
+        formula = "=Schedule!" + cellValues + "91"
+        Range("N4").formula = formula
+        formula = "=Schedule!" + cellValues + "92"
+        Range("N5").formula = formula
+        formula = "=Schedule!" + cellValues + "93"
+        Range("N6").formula = formula
+        formula = "=Schedule!" + cellValues + "94"
+        Range("N7").formula = formula
+        formula = "=Schedule!" + cellValues + "95"
+        Range("N8").formula = formula
+        formula = "=Schedule!" + cellValues + "96"
+        Range("N9").formula = formula
+        formula = "=Schedule!" + cellValues + "97"
+        Range("N10").formula = formula
+        formula = "=Schedule!" + cellValues + "98"
+        Range("N11").formula = formula
+        formula = "=Schedule!" + cellValues + "99"
+        Range("N12").formula = formula
+        formula = "=Schedule!" + cellValues + "100"
+        Range("N13").formula = formula
+
+    '1010 Brand
+        formula = "=Schedule!" + cellValues + "103"
+        Range("N15").formula = formula
+        formula = "=Schedule!" + cellValues + "104"
+        Range("N16").formula = formula
+        formula = "=Schedule!" + cellValues + "105"
+        Range("N17").formula = formula
+        formula = "=Schedule!" + cellValues + "106"
+        Range("N18").formula = formula
+        formula = "=Schedule!" + cellValues + "107"
+        Range("N19").formula = formula
+    'G Main
+        formula = "=Schedule!" + cellValues + "109"
+        Range("N21").formula = formula
+        formula = "=Schedule!" + cellValues + "110"
+        Range("N22").formula = formula
+        formula = "=Schedule!" + cellValues + "111"
+        Range("N23").formula = formula
+        formula = "=Schedule!" + cellValues + "112"
+        Range("N24").formula = formula
+        formula = "=Schedule!" + cellValues + "113"
+        Range("N25").formula = formula
+        formula = "=Schedule!" + cellValues + "114"
+        Range("N26").formula = formula
+        formula = "=Schedule!" + cellValues + "115"
+        Range("N27").formula = formula
+        formula = "=Schedule!" + cellValues + "116"
+        Range("N28").formula = formula
+
+    'DESTINATION
+    '1042 Day
+        formula = "=Schedule!" + cellValues + "119"
+        Range("N31").formula = formula
+        formula = "=Schedule!" + cellValues + "120"
+        Range("N32").formula = formula
+        formula = "=Schedule!" + cellValues + "121"
+        Range("N33").formula = formula
+        formula = "=Schedule!" + cellValues + "122"
+        Range("N34").formula = formula
+        formula = "=Schedule!" + cellValues + "123"
+        Range("N35").formula = formula
+        formula = "=Schedule!" + cellValues + "124"
+        Range("N36").formula = formula
+        formula = "=Schedule!" + cellValues + "125"
+        Range("N37").formula = formula
+    '1042 Night
+        formula = "=Schedule!" + cellValues + "126"
+        Range("N39").formula = formula
+        formula = "=Schedule!" + cellValues + "127"
+        Range("N40").formula = formula
+        formula = "=Schedule!" + cellValues + "128"
+        Range("N41").formula = formula
+    'Sales Support-Food
+        formula = "=Schedule!" + cellValues + "131"
+        Range("N43").formula = formula
+        formula = "=Schedule!" + cellValues + "132"
+        Range("N44").formula = formula
+
+
+    'LUX
+    '1012 Circle
+        formula = "=Schedule!" + cellValues + "137"
+        Range("T3").formula = formula
+        formula = "=Schedule!" + cellValues + "138"
+        Range("T4").formula = formula
+        formula = "=Schedule!" + cellValues + "139"
+        Range("T5").formula = formula
+        formula = "=Schedule!" + cellValues + "140"
+        Range("T6").formula = formula
+        formula = "=Schedule!" + cellValues + "141"
+        Range("T7").formula = formula
+       
+    '1012 Cartier
+        formula = "=Schedule!" + cellValues + "144"
+        Range("T12").formula = formula
+        formula = "=Schedule!" + cellValues + "145"
+        Range("T13").formula = formula
+    '1012 SUN+FW
+        formula = "=Schedule!" + cellValues + "147"
+        Range("T15").formula = formula
+        formula = "=Schedule!" + cellValues + "148"
+        Range("T16").formula = formula
+
+    '1010 A & 1021 SW+SUN
+        formula = "=Schedule!" + cellValues + "150"
+        Range("T18").formula = formula
+        formula = "=Schedule!" + cellValues + "151"
+        Range("T19").formula = formula
+        formula = "=Schedule!" + cellValues + "152"
+        Range("T20").formula = formula
+        formula = "=Schedule!" + cellValues + "153"
+        Range("T21").formula = formula
+        formula = "=Schedule!" + cellValues + "154"
+        Range("T22").formula = formula
+        formula = "=Schedule!" + cellValues + "155"
+        Range("T23").formula = formula
+        formula = "=Schedule!" + cellValues + "156"
+        Range("T24").formula = formula
+        formula = "=Schedule!" + cellValues + "157"
+        Range("T25").formula = formula
+    'FASHION
+    'GUCCI (G) 1018
+        formula = "=Schedule!" + cellValues + "160"
+        Range("Z3").formula = formula
+        formula = "=Schedule!" + cellValues + "161"
+        Range("Z4").formula = formula
+        formula = "=Schedule!" + cellValues + "162"
+        Range("Z5").formula = formula
+        formula = "=Schedule!" + cellValues + "163"
+        Range("Z6").formula = formula
+        formula = "=Schedule!" + cellValues + "164"
+        Range("Z7").formula = formula
+        formula = "=Schedule!" + cellValues + "165"
+        Range("Z8").formula = formula
+        formula = "=Schedule!" + cellValues + "166"
+        Range("Z9").formula = formula
+    'GUCCI (A) 1025
+        formula = "=Schedule!" + cellValues + "169"
+        Range("Z11").formula = formula
+        formula = "=Schedule!" + cellValues + "170"
+        Range("Z12").formula = formula
+        formula = "=Schedule!" + cellValues + "171"
+        Range("Z13").formula = formula
+        formula = "=Schedule!" + cellValues + "172"
+        Range("Z14").formula = formula
+        formula = "=Schedule!" + cellValues + "173"
+        Range("Z15").formula = formula
+        formula = "=Schedule!" + cellValues + "174"
+        Range("Z16").formula = formula
+        formula = "=Schedule!" + cellValues + "175"
+        Range("Z17").formula = formula
+    'Burberry
+        formula = "=Schedule!" + cellValues + "180"
+        Range("Z19").formula = formula
+        formula = "=Schedule!" + cellValues + "181"
+        Range("Z20").formula = formula
+        formula = "=Schedule!" + cellValues + "182"
+        Range("Z21").formula = formula
+        formula = "=Schedule!" + cellValues + "183"
+        Range("Z22").formula = formula
+        formula = "=Schedule!" + cellValues + "184"
+        Range("Z23").formula = formula
+        formula = "=Schedule!" + cellValues + "185"
+        Range("Z24").formula = formula
+        formula = "=Schedule!" + cellValues + "186"
+        Range("Z25").formula = formula
+        formula = "=Schedule!" + cellValues + "187"
+        Range("Z26").formula = formula
+        formula = "=Schedule!" + cellValues + "188"
+        Range("Z27").formula = formula
+        formula = "=Schedule!" + cellValues + "189"
+        Range("Z28").formula = formula
+        
+    'Coach
+        formula = "=Schedule!" + cellValues + "190"
+        Range("Z30").formula = formula
+        formula = "=Schedule!" + cellValues + "191"
+        Range("Z31").formula = formula
+        formula = "=Schedule!" + cellValues + "192"
+        Range("Z32").formula = formula
+        formula = "=Schedule!" + cellValues + "193"
+        Range("Z33").formula = formula
+        formula = "=Schedule!" + cellValues + "194"
+        Range("Z34").formula = formula
+        formula = "=Schedule!" + cellValues + "195"
+        Range("Z35").formula = formula
+        formula = "=Schedule!" + cellValues + "196"
+        Range("Z36").formula = formula
+        formula = "=Schedule!" + cellValues + "197"
+        Range("Z37").formula = formula
+        
+    'SUPPORT
+    'Day Shift ITG
+        formula = "=Schedule!" + cellValues + "206"
+        Range("T31").formula = formula
+        formula = "=Schedule!" + cellValues + "207"
+        Range("T32").formula = formula
+        formula = "=Schedule!" + cellValues + "208"
+        Range("T33").formula = formula
+        formula = "=Schedule!" + cellValues + "209"
+        Range("T34").formula = formula
+        formula = "=Schedule!" + cellValues + "210"
+        Range("T35").formula = formula
+        formula = "=Schedule!" + cellValues + "211"
+        Range("T36").formula = formula
+        formula = "=Schedule!" + cellValues + "212"
+        Range("T37").formula = formula
+        formula = "=Schedule!" + cellValues + "213"
+        Range("T38").formula = formula
+        formula = "=Schedule!" + cellValues + "214"
+        Range("T39").formula = formula
+        formula = "=Schedule!" + cellValues + "215"
+        Range("T40").formula = formula
+        formula = "=Schedule!" + cellValues + "216"
+        Range("T41").formula = formula
+        formula = "=Schedule!" + cellValues + "217"
+        Range("T42").formula = formula
+        formula = "=Schedule!" + cellValues + "218"
+        Range("T43").formula = formula
+        formula = "=Schedule!" + cellValues + "219"
+        Range("T44").formula = formula
+    'Day Shift ITA
+        formula = "=Schedule!" + cellValues + "221"
+        Range("T46").formula = formula
+        formula = "=Schedule!" + cellValues + "222"
+        Range("T47").formula = formula
+        formula = "=Schedule!" + cellValues + "223"
+        Range("T48").formula = formula
+        formula = "=Schedule!" + cellValues + "224"
+        Range("T49").formula = formula
+        formula = "=Schedule!" + cellValues + "225"
+        Range("T50").formula = formula
+        formula = "=Schedule!" + cellValues + "226"
+        Range("T51").formula = formula
+    'Warehouse
+        formula = "=Schedule!" + cellValues + "229"
+        Range("T53").formula = formula
+        formula = "=Schedule!" + cellValues + "230"
+        Range("T54").formula = formula
+        formula = "=Schedule!" + cellValues + "231"
+        Range("T55").formula = formula
+        formula = "=Schedule!" + cellValues + "232"
+        Range("T56").formula = formula
+        formula = "=Schedule!" + cellValues + "233"
+        Range("T57").formula = formula
+    'Night Shift ITG
+        formula = "=Schedule!" + cellValues + "235"
+        Range("T59").formula = formula
+        formula = "=Schedule!" + cellValues + "236"
+        Range("T60").formula = formula
+        formula = "=Schedule!" + cellValues + "237"
+        Range("T61").formula = formula
+        formula = "=Schedule!" + cellValues + "238"
+        Range("T62").formula = formula
+        formula = "=Schedule!" + cellValues + "239"
+        Range("T63").formula = formula
+        formula = "=Schedule!" + cellValues + "240"
+        Range("T64").formula = formula
+        formula = "=Schedule!" + cellValues + "241"
+        Range("T65").formula = formula
+        formula = "=Schedule!" + cellValues + "242"
+        Range("T66").formula = formula
+        formula = "=Schedule!" + cellValues + "243"
+        Range("T67").formula = formula
+    'Night Shift ITA
+        formula = "=Schedule!" + cellValues + "245"
+        Range("T69").formula = formula
+        formula = "=Schedule!" + cellValues + "246"
+        Range("T70").formula = formula
+        formula = "=Schedule!" + cellValues + "247"
+        Range("T71").formula = formula
+        formula = "=Schedule!" + cellValues + "248"
+        Range("T72").formula = formula
+        formula = "=Schedule!" + cellValues + "249"
+        Range("T73").formula = formula
+        formula = "=Schedule!" + cellValues + "250"
+        Range("T74").formula = formula
+
+    'Generate times
+    Call generateTimesRange("D3:D81") 'Beauty
+    Call generateTimesRange("H3:H81") 'Beauty
+    Call generateTimesRange("N3:N44") 'SWT
+    Call generateTimesRange("T3:T25") 'Dest/Lux
+    Call generateTimesRange("Z3:Z37") 'Fashion
+    
+    'Exceptions
+    If InStr(Range("Z3"), "G") = 1 Or InStr(Range("Z3"), "A") = 1 Then 'Yoko (Dr. note)
+        Range("Z3").Offset(0, 1) = "10:45"
+        Range("Z3").Offset(0, 2) = "12:30"
+        Range("Z3").Offset(0, 3) = "2:45"
+    End If
+    
+    If InStr(Range("T3"), "G") = 1 Or InStr(Range("T3"), "A") = 1 Then 'Kitty later then Esther
+        Range("T3").Offset(0, 1) = "8:45"
+        Range("T3").Offset(0, 2) = "10:45"
+        Range("T3").Offset(0, 3) = "1:15"
+    End If
+    
+    If InStr(Range("T4"), "G") = 1 Or InStr(Range("T4"), "A") = 1 Then 'Esther different break times than Kitty
+        Range("T4").Offset(0, 1) = "8:30"
+        Range("T4").Offset(0, 2) = "10:15"
+        Range("T4").Offset(0, 3) = "1:00"
+    End If
+    
+    Application.ScreenUpdating = True
+    Application.Calculation = xlCalculationAutomatic
+    
+End Sub
+
+Sub checkTerminal(terminal As String, thisCell As String, scheCell As String)
+    sheetCode = cellValues + scheCell
+    check = InStr(Sheets("Schedule").Range(sheetCode), terminal)
+    If check = 1 Then
+        Range(thisCell) = Sheets("Schedule").Range(sheetCode)
+    Else
+        Range(thisCell) = ""
+    End If
+End Sub
+
+Sub clear()
+    ActiveSheet.Range("D3:G81").ClearContents 'Beauty G
+    Columns("D:G").HorizontalAlignment = xlCenter
+    Columns("D").Font.Bold = True
+    ActiveSheet.Range("H3:K81").ClearContents 'Beauty A
+    Columns("H:K").HorizontalAlignment = xlCenter
+    Columns("H").Font.Bold = True
+    ActiveSheet.Range("N3:Q44").ClearContents 'SWT
+    Columns("N:Q").HorizontalAlignment = xlCenter
+    Columns("N").Font.Bold = True
+    ActiveSheet.Range("T3:W75").ClearContents 'Dest/Lux
+    Columns("T:W").HorizontalAlignment = xlCenter
+    Columns("T").Font.Bold = True
+    ActiveSheet.Range("Z3:AC37").ClearContents 'Fashion
+    Columns("Z:AC").HorizontalAlignment = xlCenter
+    Columns("Z").Font.Bold = True
+End Sub
+
+Sub generateTimesRange(rangeValues As String)
+    Dim counterMorning As Integer
+    Dim counterMid As Integer
+    Dim counterClose As Integer
+
+    For Each cell In ActiveSheet.Range(rangeValues)
+        If InStr(cell.Value, "6") = 3 And InStr(cell.Value, "1") = 5 Then '6-11 Shift
+            cell.Offset(0, 1) = "7:15"
+            cell.Offset(0, 2) = "8:45"
+            cell.Offset(0, 3) = "10:00"
+        ElseIf InStr(cell.Value, "6") = 3 Then '6-2 Shift
+            cell.Offset(0, 1) = "8:30"
+            cell.Offset(0, 2) = "10:00"
+            cell.Offset(0, 3) = "1:00"
+        ElseIf InStr(cell.Value, "7") = 3 Then '7-3 Shift
+            cell.Offset(0, 1) = "8:30"
+            cell.Offset(0, 2) = "10:00"
+            cell.Offset(0, 3) = "1:00"
+        ElseIf InStr(cell.Value, "8") = 3 Then '815-415 Shift
+            If counterMorning = 0 Then '1st rotation
+                cell.Offset(0, 1) = "10:15"
+                cell.Offset(0, 2) = "11:30"
+                cell.Offset(0, 3) = "2:00"
+                counterMorning = 1
+            ElseIf counterMorning = 1 Then '2nd rotation
+                cell.Offset(0, 1) = "10:30"
+                cell.Offset(0, 2) = "12:00"
+                cell.Offset(0, 3) = "2:30"
+                counterMorning = 2
+            Else
+                cell.Offset(0, 1) = "10:45" '3rd rotation
+                cell.Offset(0, 2) = "12:30"
+                cell.Offset(0, 3) = "2:45"
+                counterMorning = 0
+            End If
+        ElseIf InStr(cell.Value, "10") = 3 Then '10-6 Shift
+            If counterMid = 0 Then
+                cell.Offset(0, 1) = "11:45" '1st rotation
+                cell.Offset(0, 2) = "1:30"
+                cell.Offset(0, 3) = "4:45"
+                counterMid = 1
+            Else
+                cell.Offset(0, 1) = "12:00" '2nd rotation
+                cell.Offset(0, 2) = "2:00"
+                cell.Offset(0, 3) = "4:30"
+                counterMid = 0
+            End If
+        ElseIf InStr(cell.Value, "3") = 3 Then '315-C Shift
+            If counterClose = 0 Then
+                cell.Offset(0, 1) = "4:45" '1st rotation
+                cell.Offset(0, 2) = "6:45"
+                cell.Offset(0, 3) = "8:45"
+                counterClose = 1
+            ElseIf counterClose = 1 Then
+                cell.Offset(0, 1) = "5:00" '2nd rotation
+                cell.Offset(0, 2) = "7:15"
+                cell.Offset(0, 3) = "9:00"
+                counterClose = 2
+            Else
+                cell.Offset(0, 1) = "5:15" '3rd rotation
+                cell.Offset(0, 2) = "7:45"
+                cell.Offset(0, 3) = "9:15"
+                counterClose = 0
+            End If
+        ElseIf InStr(cell.Value, "4") = 3 Then '415-C Shift
+            If counterClose = 0 Then
+                cell.Offset(0, 1) = "5:45" '1st rotation
+                cell.Offset(0, 2) = "7:45"
+                cell.Offset(0, 3) = "9:45"
+                counterClose = 1
+            ElseIf counterClose = 1 Then
+                cell.Offset(0, 1) = "6:00" '2nd rotation
+                cell.Offset(0, 2) = "8:15"
+                cell.Offset(0, 3) = "10:00"
+                counterClose = 2
+            Else
+                cell.Offset(0, 1) = "6:15" '3rd rotation
+                cell.Offset(0, 2) = "8:45"
+                cell.Offset(0, 3) = "10:15"
+                counterClose = 0
+            End If
+        ElseIf InStr(cell.Value, "5") = 3 Then '530-C Shift
+            cell.Offset(0, 1) = "6:45"
+            cell.Offset(0, 2) = "8:15"
+            cell.Offset(0, 3) = "10:30"
+        End If
+    Next
+End Sub
+
