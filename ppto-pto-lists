@@ -5,22 +5,39 @@
 '
 'Date created : 2/12/2018
 '
-'Last revision:
+'Last revision: 4/9/2019
+'   DateSpace Function - Get date before the space between the date and time
 '**********************************
-' Generates 2 sorted lists of PriorityPTO & PTO based on the Date(extracts Date from comments) of application 
+' Generates 2 sorted lists of PPTO & PTO based on the Date(extracts Date from comments) of application 
 '**********************************
 Sub datePTO()
     'Call generateNames("letters()+3:letters+84", "letters87", -31
     Dim num As Integer
+    Dim num2 As Integer
     Dim value1, value2 As String
-    num = -48
     
-    For let1 = 66 To 90 'Start from B(66)
-        If let1 < 81 Then ' Stop at P(80)
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    
+    num = -22
+    num2 = 0
+    
+    For let1 = 69 To 90 'Start from E(69)
+        num2 = num2 - 1
+        value1 = Chr(let1) & "3" & ":" & Chr(let1) & "100"
+        value2 = Chr(let1) & "101"
+        Call generateNames("" + value1, "" + value2, num2)
+        'Debug.Print value1
+        'Debug.Print value2
+        'Debug.Print num2
+    Next
+    
+    For let1 = 65 To 90 'Start from A(65)
+        If let1 < 79 Then ' Stop at N(78)
             For let2 = 65 To 90
                 num = num - 1
-                value1 = Chr(let1) & Chr(let2) & "3" & ":" & Chr(let1) & Chr(let2) & "96"
-                value2 = Chr(let1) & Chr(let2) & "97"
+                value1 = Chr(let1) & Chr(let2) & "3" & ":" & Chr(let1) & Chr(let2) & "100"
+                value2 = Chr(let1) & Chr(let2) & "101"
                 Call generateNames("" + value1, "" + value2, num)
                 'Debug.Print value1
                 'Debug.Print value2
@@ -30,6 +47,10 @@ Sub datePTO()
             Exit For
         End If
     Next
+    
+    Application.ScreenUpdating = True
+    Application.Calculation = xlCalculationAutomatic
+    
 End Sub
 
 
@@ -48,8 +69,7 @@ Sub generateNames(ranges As String, countRange As String, nameRow As Integer)
         If Not rng Is Nothing Then 'Cell has a comment
             For Each cell In xWs.Range(ranges)
                 If cell.Text = "PPTO" Then 'If it is a PPTO
-                    ptoDate = Mid(cell.Comment.Text, 15, 9)
-                    arr.Add (Format(ptoDate, "yyyy/mm/dd") & Chr(10) & cell.Value & Chr(10) & cell.Offset(0, nameRow).Text)
+                    arr.Add (cell.Value & Chr(10) & cell.Offset(0, nameRow).Text)
                     arr.Sort 'Sort PPTO
                     counterPPTO = counterPPTO + 1
                 End If
@@ -57,7 +77,7 @@ Sub generateNames(ranges As String, countRange As String, nameRow As Integer)
             
             For Each cell In xWs.Range(ranges) 'Add the rest of the PTO
                 If cell.Text = "PTO" Or cell.Text = "BD" Or cell.Text = "FLH" Or cell.Text = "HO" Then 'Regular PTO
-                    ptoDate = Mid(cell.Comment.Text, 15, 9)
+                    ptoDate = DateSpace(cell.Comment.Text)
                     arr.Add (Format(ptoDate, "yyyy/mm/dd") & Chr(10) & cell.Value & Chr(10) & cell.Offset(0, nameRow).Text)
                 End If
             Next cell
@@ -83,3 +103,12 @@ Sub generateNames(ranges As String, countRange As String, nameRow As Integer)
     Next x
     
 End Sub
+
+Function DateSpace(DateValue As String) As String
+    Dim lSpace As Long
+    Dim strDate As String
+    
+    strDate = Trim(DateValue)
+        lSpace = InStr(1, strDate, " ", vbTextCompare)
+        DateSpace = Trim(Left(strDate, lSpace))
+End Function
