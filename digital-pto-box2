@@ -1,0 +1,326 @@
+'**********************************
+'Title: Digital PTO Application
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 6/1/2018
+'
+'Last revision: 3/8/2019
+'**********************************
+
+Private Sub cmd_Accept_Click()
+    Dim row As String
+    Dim day1, day2 As Integer
+    Dim month1, month2 As Integer
+    Dim total1, total2 As Integer
+    
+    row = Mid(Sheets("PTO Calendar").Range("NW4").Value, 4, 3)
+    day1 = day(UserForm1.txt_From.Value)
+    day2 = day(UserForm1.txt_To.Value)
+    month1 = Month_to_Days(month(UserForm1.txt_From.Value))
+    month2 = Month_to_Days(month(UserForm1.txt_To.Value))
+    total1 = month1 + day1
+    total2 = month2 + day2
+    
+    If opt_PTO = False And opt_nPTO = False And opt_PPTO = False And opt_BD = False And opt_HO = False Then
+        MsgBox "Please select a request type."
+    Else
+        If opt_PTO = True Then
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "HO" Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "nPTO" _
+                Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "BD" Then
+                    MsgBox "This date is already requested. Please Cancel before changing."
+                
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) <> "OFF" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "PTO"
+                    
+                    If Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment Is Nothing Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, i).AddComment "" + UserForm1.lbl_Request.Caption
+                    Else
+                        MsgBox "This date is already requested. Please Cancel before changing."
+                    End If
+                End If
+            Next i
+        ElseIf opt_nPTO = True Then
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "HO" Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "PTO" _
+                Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "BD" Then
+                    MsgBox "This date is already requested. Please Cancel before changing."
+                    
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) <> "OFF" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "nPTO"
+                    
+                    If Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment Is Nothing Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, i).AddComment "" + UserForm1.lbl_Request.Caption
+                    Else
+                        MsgBox "This date is already requested. Please Cancel before changing."
+                    End If
+                End If
+            Next i
+        ElseIf opt_PPTO = True Then
+        ElseIf opt_BD = True Then
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "HO" _
+                Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "nPTO" Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "PTO" Then
+                    MsgBox "This date is already requested. Please Cancel before changing."
+                    
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) <> "OFF" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "BD"
+                    
+                    If Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment Is Nothing Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, i).AddComment "" + UserForm1.lbl_Request.Caption
+                    Else
+                        MsgBox "This date is already requested. Please Cancel before changing."
+                    End If
+                End If
+            Next i
+        Else
+            If total1 = total2 And lst_Holiday.ListCount <> 0 Then
+                For i = total1 To total2
+                    If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "PTO" _
+                    Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "nPTO" Or Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "BD" Then
+                        MsgBox "This date is already requested. Please Cancel before changing."
+                        
+                    ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) <> "OFF" Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "HO"
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 372 + selectionHoliday(checkSelection)) = 1
+                        
+                        If Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment Is Nothing Then
+                            Sheets("PTO Calendar").Range("D" + row).Offset(0, i).AddComment "" + UserForm1.lbl_Request.Caption + vbNewLine + checkSelection
+                        Else
+                            MsgBox "This date is already requested. Please Cancel before changing."
+                        End If
+                    End If
+                Next i
+            Else
+                MsgBox "Request only 1 Holiday at a time."
+            End If
+        End If
+        
+    UserForm2.Hide
+    'Call FormatAllComments
+    Call UnloadForms
+    End If
+End Sub
+
+Private Sub lst_Holiday_Click()
+
+End Sub
+
+Private Sub opt_BD_Click()
+    lst_Holiday.Visible = False
+End Sub
+
+Private Sub opt_HO_Click()
+    lst_Holiday.Visible = True
+End Sub
+
+Private Sub opt_nPTO_Click()
+    lst_Holiday.Visible = False
+End Sub
+
+Private Sub opt_PPTO_Click()
+    lst_Holiday.Visible = False
+End Sub
+
+Private Sub opt_PTO_Click()
+    lst_Holiday.Visible = False
+End Sub
+
+Private Sub UserForm_Initialize()
+    Dim hlist As Variant
+    Dim month1 As String
+    Dim day1 As String
+    
+    month1 = month(UserForm1.txt_From.Value)
+    day1 = day(UserForm1.txt_From.Value)
+    
+    hlist = Array("Jan 01 - New Years Day", "Jan 15 - Martin Luther King Day", "Feb 19 - President's Day", "May 28 - Memorial Day", "Jul 04 - Independence Day", "Sep 03 - Labor Day", "Nov 22 - Thanksgiving Day", "Dec 25 - Christmas Day")
+    
+    If month1 = 12 Then                             'If the date is before the holiday
+        If day1 >= 25 Then
+            hlist = hlist
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 1)
+        End If
+    ElseIf month1 = 11 Then
+        If day1 >= 22 Then
+            ReDim Preserve hlist(UBound(hlist) - 1)
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 2)
+        End If
+    ElseIf month1 >= 9 Then
+        If month1 > 9 Or day1 >= 3 Then
+            ReDim Preserve hlist(UBound(hlist) - 2)
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 3)
+        End If
+    ElseIf month1 >= 7 Then
+        If month1 > 7 Or day1 >= 4 Then
+            ReDim Preserve hlist(UBound(hlist) - 3)
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 4)
+        End If
+    ElseIf month1 >= 4 Then
+        If month1 > 4 Or day1 >= 28 Then
+            ReDim Preserve hlist(UBound(hlist) - 4)
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 5)
+        End If
+    ElseIf month1 >= 2 Then
+        If month1 > 2 Or day1 >= 19 Then
+            ReDim Preserve hlist(UBound(hlist) - 5)
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 6)
+        End If
+    ElseIf month1 >= 1 Then
+        If month1 > 1 Or day1 >= 15 Then
+            ReDim Preserve hlist(UBound(hlist) - 6)
+        Else
+            ReDim Preserve hlist(UBound(hlist) - 7)
+        End If
+    Else
+        ReDim Preserve hlist(UBound(hlist) - 7)
+    End If
+    
+    If UserForm1.lbl_NYD.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Jan 01 - New Years Day")
+    End If
+    If UserForm1.lbl_MLK.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Jan 15 - Martin Luther King Day")
+    End If
+    If UserForm1.lbl_P.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Feb 19 - President's Day")
+    End If
+    If UserForm1.lbl_M.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "May 28 - Memorial Day")
+    End If
+    If UserForm1.lbl_I.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Jul 04 - Independence Day")
+    End If
+    If UserForm1.lbl_L.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Sep 03 - Labor Day")
+    End If
+    If UserForm1.lbl_T.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Nov 22 - Thanksgiving Day")
+    End If
+    If UserForm1.lbl_C.Visible = True Then
+       hlist = RemoveArrayElement(hlist, "Dec 25 - Christmas Day")
+    End If
+    
+    lst_Holiday.List = hlist
+    
+    'With lst_Holiday
+     '   .AddItem "Jan 01 - New Years Day"
+     '   .AddItem "Jan 15 - Martin Luther King Day"
+     '   .AddItem "Feb 19 - President's Day"
+     '   .AddItem "May 28 - Memorial Day"
+     '   .AddItem "Jul 04 - Independence Day"
+     '   .AddItem "Sep 03 - Labor Day"
+     '   .AddItem "Nov 22 - Thanksgiving Day"
+     '   .AddItem "Dec 25 - Christmas Day"
+   ' End With
+   
+    If UserForm1.lbl_BD = 1 Then '1 Birthday limit
+        opt_BD.Enabled = False
+    ElseIf UserForm1.lbl_HO = 8 Then '8 Holidays limit
+        opt_HO.Enabled = False
+    ElseIf UserForm1.lbl_nPTO = 10 Then '10 non-Paid PTO limit
+        opt_nPTO.Enabled = False
+    End If
+
+End Sub
+
+Private Function Month_to_Days(month As Integer) As Integer
+    If month = 1 Then
+        Month_to_Days = 0
+    ElseIf month = 2 Then
+        Month_to_Days = 31
+    ElseIf month = 3 Then
+        Month_to_Days = 59
+    ElseIf month = 4 Then
+        Month_to_Days = 90
+    ElseIf month = 5 Then
+        Month_to_Days = 120
+    ElseIf month = 6 Then
+        Month_to_Days = 151
+    ElseIf month = 7 Then
+        Month_to_Days = 181
+    ElseIf month = 8 Then
+        Month_to_Days = 212
+    ElseIf month = 9 Then
+        Month_to_Days = 243
+    ElseIf month = 10 Then
+        Month_to_Days = 273
+    ElseIf month = 11 Then
+        Month_to_Days = 304
+    ElseIf month = 12 Then
+        Month_to_Days = 334
+    End If
+End Function
+
+Private Function checkSelection() As String
+    For i = 0 To lst_Holiday.ListCount - 1
+        If lst_Holiday.Selected(i) = True Then
+            checkSelection = lst_Holiday.List(i)
+        End If
+    Next i
+End Function
+
+Private Function selectionHoliday(holiday As String) As Integer
+    If holiday = "Jan 01 - New Years Day" Then
+        selectionHoliday = 1
+    ElseIf holiday = "Jan 15 - Martin Luther King Day" Then
+        selectionHoliday = 2
+    ElseIf holiday = "Feb 19 - President's Day" Then
+        selectionHoliday = 3
+    ElseIf holiday = "May 28 - Memorial Day" Then
+        selectionHoliday = 4
+    ElseIf holiday = "Jul 04 - Independence Day" Then
+        selectionHoliday = 5
+    ElseIf holiday = "Sep 03 - Labor Day" Then
+        selectionHoliday = 6
+    ElseIf holiday = "Nov 22 - Thanksgiving Day" Then
+        selectionHoliday = 7
+    ElseIf holiday = "Dec 25 - Christmas Day" Then
+        selectionHoliday = 8
+    End If
+End Function
+
+Private Function RemoveArrayElement(ByVal MyArray, ByVal Item)
+  S = ""
+  For N = 0 To UBound(MyArray)
+    If StrComp(MyArray(N), Item, vbTextCompare) <> 0 Then
+      If S <> "" Then
+        S = S & "," & MyArray(N)
+      Else
+        S = MyArray(N)
+      End If
+    End If
+  Next
+  RemoveArrayElement = Split(S, ",")
+End Function
+
+Private Sub FormatAllComments()
+Dim xWs As Worksheet
+Dim xComment As Comment
+For Each xWs In Application.ActiveWorkbook.Worksheets
+    For Each xComment In xWs.Comments
+        With xComment.Shape.TextFrame.Characters.Font
+            .Name = "Microsoft Sans Serif"
+            .Size = 18
+        End With
+        xComment.Shape.TextFrame.AutoSize = True
+    Next
+Next
+End Sub
+
+Private Sub UnloadForms()
+    Unload UserForm1
+    Unload UserForm2
+End Sub
+
+Private Sub cbCancel_Click()
+    Sheets("PTO Calendar").Protect password:="DFS4all!"
+    Call UnloadForms
+End Sub
