@@ -1,0 +1,143 @@
+'**********************************
+'Title: Digital PTO Application
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 6/1/2018
+'
+'Last revision: 3/8/2019
+'**********************************
+
+Private Sub cmd_Accept_Click()
+    Dim row As String
+    Dim day1, day2 As Integer
+    Dim month1, month2 As Integer
+    Dim total1, total2 As Integer
+    
+    row = Mid(Sheets("PTO Calendar").Range("NW4").Value, 4, 3)
+    day1 = day(UserForm1.txt_From.Value)
+    day2 = day(UserForm1.txt_To.Value)
+    month1 = Month_to_Days(month(UserForm1.txt_From.Value))
+    month2 = Month_to_Days(month(UserForm1.txt_To.Value))
+    total1 = month1 + day1
+    total2 = month2 + day2
+    
+    If opt_PTO = False And opt_nPTO = False And opt_PPTO = False And opt_BD = False And opt_HO = False Then
+        MsgBox "Please select a request type."
+    Else
+        If opt_PTO = True Then
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "PTO" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = ""
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Delete
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "OFF" Then
+                Else
+                    MsgBox "The dates selected are not PTO."
+                End If
+            Next i
+        ElseIf opt_nPTO = True Then
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "nPTO" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = ""
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Delete
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "OFF" Then
+                Else
+                    MsgBox "The dates selected are not non-paid PTO."
+                End If
+            Next i
+        ElseIf opt_PPTO = True Then
+        ElseIf opt_BD = True Then
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "BD" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = ""
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Delete
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "OFF" Then
+                Else
+                    MsgBox "The date selected is not a Birthday."
+                End If
+            Next i
+        Else
+            For i = total1 To total2
+                If Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "HO" Then
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = ""
+                    If InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Jan 01 - New Years Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 373) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Jan 15 - Martin Luther King Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 374) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Feb 19 - President's Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 375) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "May 28 - Memorial Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 376) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Jul 04 - Independence Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 377) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Sep 03 - Labor Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 378) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Nov 22 - Thanksgiving Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 379) = ""
+                    ElseIf InStr(Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Text, "Dec 25 - Christmas Day") <> 0 Then
+                        Sheets("PTO Calendar").Range("D" + row).Offset(0, 380) = ""
+                    End If
+                    Sheets("PTO Calendar").Range("D" + row).Offset(0, i).Comment.Delete
+                ElseIf Sheets("PTO Calendar").Range("D" + row).Offset(0, i) = "OFF" Then
+                Else
+                    MsgBox "The date selected is not a Holiday."
+                End If
+            Next i
+        End If
+        
+    UserForm3.Hide
+    Call UnloadForms
+    End If
+End Sub
+
+     '   .AddItem "Jan 01 - New Years Day"
+     '   .AddItem "Jan 15 - Martin Luther King Day"
+     '   .AddItem "Feb 19 - President's Day"
+     '   .AddItem "May 28 - Memorial Day"
+     '   .AddItem "Jul 04 - Independence Day"
+     '   .AddItem "Sep 03 - Labor Day"
+     '   .AddItem "Nov 22 - Thanksgiving Day"
+     '   .AddItem "Dec 25 - Christmas Day"
+
+Private Function Month_to_Days(month As Integer) As Integer
+    If month = 1 Then
+        Month_to_Days = 0
+    ElseIf month = 2 Then
+        Month_to_Days = 31
+    ElseIf month = 3 Then
+        Month_to_Days = 59
+    ElseIf month = 4 Then
+        Month_to_Days = 90
+    ElseIf month = 5 Then
+        Month_to_Days = 120
+    ElseIf month = 6 Then
+        Month_to_Days = 151
+    ElseIf month = 7 Then
+        Month_to_Days = 181
+    ElseIf month = 8 Then
+        Month_to_Days = 212
+    ElseIf month = 9 Then
+        Month_to_Days = 243
+    ElseIf month = 10 Then
+        Month_to_Days = 273
+    ElseIf month = 11 Then
+        Month_to_Days = 304
+    ElseIf month = 12 Then
+        Month_to_Days = 334
+    End If
+End Function
+
+Private Sub UnloadForms()
+    Unload UserForm1
+    Unload UserForm3
+End Sub
+
+Private Sub cbCancel_Click()
+    Sheets("PTO Calendar").Protect password:="DFS4all!"
+    Call UnloadForms
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub
+
