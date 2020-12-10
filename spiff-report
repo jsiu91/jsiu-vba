@@ -1,0 +1,68 @@
+'**********************************
+'Title: Spiff Report
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 5/20/2019
+'
+'Last revision: 5/20/2019
+'**********************************
+'Retrieves data from the SPIFFs and Commission report.
+'**********************************
+Sub Header()
+'    Application.ScreenUpdating = False
+'    Application.Calculation = xlCalculationManual
+    
+    Dim wsCopy As Worksheet
+    Dim wsCopy2 As Worksheet
+    Dim wsCopy3 As Worksheet
+    Dim fcRange As String
+    Dim empN As String
+    Dim FoundCell As Range
+    
+    'Set variables for copy and destination sheets. Change name of the file
+    Set wsCopy = Workbooks("1904_SFO_SPIFF_FINAL values.xlsx").Worksheets("SFO_Sum") 'Change
+    Set wsCopy2 = Workbooks("1904_SFO_SPIFF_FINAL values.xlsx").Worksheets("Apr19 SPIFFs SACOM") 'Change
+    Set wsCopy3 = Workbooks("SFO Commissionpayoutsummary April v2.xls").Worksheets("SFO beauty sales") 'Change
+      
+    'SPIFF Header
+    Range("O:T").clear 'Change
+    wsCopy.Range("A4:I4").copy Destination:=ActiveSheet.Range("H1") 'Change
+
+    empN = InputBox("Enter Employee Number:")
+
+    'SPIFF Employee values
+    Set FoundCell = wsCopy.Range("A:A").Find(What:=empN)
+    fcRange = "A" & FoundCell.Row & ":" & "I" & FoundCell.Row 'Change
+    wsCopy.Range(fcRange).copy Destination:=ActiveSheet.Range("H2")
+'    Range(Selection, Selection.End(xlToRight)).copy Destination:=ActiveSheet.Range("H2")
+
+    'SPIFF values
+    Set FoundCell = wsCopy2.Range("A:KZ").Find(What:=empN)
+    wsCopy2.Range("$A$3:$GI$4440").AutoFilter Field:=FoundCell.Column, Criteria1:="<>"
+    wsCopy2.Columns(FoundCell.Column).copy Destination:=ActiveSheet.Range("G1")
+    wsCopy2.Range("A:E").copy Destination:=ActiveSheet.Range("B1")
+    wsCopy2.ShowAllData
+    
+    ActiveSheet.Next.Select
+    
+    'Commission Header
+    wsCopy3.Range("A7:E12").copy Destination:=ActiveSheet.Range("A7")
+    
+    'Comm Employee values
+    ActiveSheet.Range("A13") = 1
+    For Each cell In wsCopy3.Range("$B$1:$B$5000")
+        If cell.Text = empN Then
+            cell.Rows.EntireRow.copy Destination:=ActiveSheet.Range("A12").End(xlDown).Offset(1, 0)
+        End If
+    Next cell
+    
+    ActiveSheet.Range("A13").EntireRow.delete
+    ActiveSheet.Next.Select
+    
+'    Application.ScreenUpdating = True
+'    Application.Calculation = xlCalculationAutomatic
+End Sub
+
+
+
