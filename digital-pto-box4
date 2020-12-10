@@ -1,0 +1,39 @@
+'**********************************
+'Title: Digital PTO Application
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 6/1/2018
+'
+'Last revision: 3/8/2019
+'**********************************
+
+Private Sub CommandButton1_Click()
+    Dim username As String
+    Dim password As String
+    Dim formula As String
+    Dim row As String
+    
+    username = txt_Employee.Value
+    password = txt_Password.Value
+    
+    formula = "=CELL(""address"",INDEX(A2:A300,MATCH(" + username + ",A2:A300,0),1))"
+    Sheets("Logins").Range("E2").formula = formula
+    
+    If Sheets("Logins").Range("F2").Value = "" Then
+        MsgBox "Incorrect Employee #"
+    Else
+        row = Mid(Sheets("Logins").Range("F2").Value, 4, 3)
+        
+        If Sheets("Logins").Range("B" + row) = "" Then
+            Sheets("Logins").Range("B" + row) = password
+            MsgBox "Password Created!"
+            Unload UserForm4
+            UserForm4.Hide
+        Else
+            MsgBox "Password already been created"
+            Unload UserForm4
+            UserForm4.Hide
+        End If
+    End If
+    
