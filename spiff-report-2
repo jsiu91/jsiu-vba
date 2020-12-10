@@ -7,7 +7,7 @@
 '
 'Last revision: 5/20/2019
 '**********************************
-'Retrieve data for the SPIFFS and Commisions report
+'Retrieve data from the SPIFFS and Commisions report
 '**********************************
 Sub Header2()
     Application.ScreenUpdating = False
