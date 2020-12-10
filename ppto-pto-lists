@@ -1,0 +1,85 @@
+'**********************************
+'Title: PTO Calendar order of prioritty
+'
+'Author: Jonathan Siu <jsiukob@gmail.com> - Initial version
+'
+'Date created : 2/12/2018
+'
+'Last revision:
+'**********************************
+' Generates 2 sorted lists of PriorityPTO & PTO based on the Date(extracts Date from comments) of application 
+'**********************************
+Sub datePTO()
+    'Call generateNames("letters()+3:letters+84", "letters87", -31
+    Dim num As Integer
+    Dim value1, value2 As String
+    num = -48
+    
+    For let1 = 66 To 90 'Start from B(66)
+        If let1 < 81 Then ' Stop at P(80)
+            For let2 = 65 To 90
+                num = num - 1
+                value1 = Chr(let1) & Chr(let2) & "3" & ":" & Chr(let1) & Chr(let2) & "96"
+                value2 = Chr(let1) & Chr(let2) & "97"
+                Call generateNames("" + value1, "" + value2, num)
+                'Debug.Print value1
+                'Debug.Print value2
+                'Debug.Print num
+            Next
+        Else
+            Exit For
+        End If
+    Next
+End Sub
+
+
+Sub generateNames(ranges As String, countRange As String, nameRow As Integer)
+    Dim counter, counterPPTO As Integer
+    Dim ptoDate As Date
+    Dim arr As Object
+    Dim rng As Range
+    Dim xWs As Worksheet
+    
+    Set arr = CreateObject("System.Collections.ArrayList")
+    
+    For Each xWs In ActiveWorkbook.Worksheets
+        On Error Resume Next
+        Set rng = xWs.Cells.SpecialCells(xlCellTypeComments)
+        If Not rng Is Nothing Then 'Cell has a comment
+            For Each cell In xWs.Range(ranges)
+                If cell.Text = "PPTO" Then 'If it is a PPTO
+                    ptoDate = Mid(cell.Comment.Text, 15, 9)
+                    arr.Add (Format(ptoDate, "yyyy/mm/dd") & Chr(10) & cell.Value & Chr(10) & cell.Offset(0, nameRow).Text)
+                    arr.Sort 'Sort PPTO
+                    counterPPTO = counterPPTO + 1
+                End If
+            Next cell
+            
+            For Each cell In xWs.Range(ranges) 'Add the rest of the PTO
+                If cell.Text = "PTO" Or cell.Text = "BD" Or cell.Text = "FLH" Or cell.Text = "HO" Then 'Regular PTO
+                    ptoDate = Mid(cell.Comment.Text, 15, 9)
+                    arr.Add (Format(ptoDate, "yyyy/mm/dd") & Chr(10) & cell.Value & Chr(10) & cell.Offset(0, nameRow).Text)
+                End If
+            Next cell
+        End If
+        Set rng = Nothing
+    Next
+    
+    If counterPPTO <> 0 Then
+        For x = 0 To counterPPTO - 1 'Print PPTO
+            Range(countRange).Offset(x + 1, 0) = arr(0)
+            arr.RemoveAt (0) 'Remove PPTO from Arraylist
+        Next x
+        counter = Range(countRange).Value - 1 - counterPPTO
+    Else
+        counter = Range(countRange).Value - 1
+    End If
+    
+    arr.Sort 'Sort PTO after PPTO is deleted
+    
+    For x = 0 To counter 'Print PTO
+        'Debug.Print arr(x)
+        Range(countRange).Offset(counterPPTO + x + 1, 0) = arr(x)
+    Next x
+    
+End Sub
